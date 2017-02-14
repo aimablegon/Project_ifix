@@ -28,4 +28,5 @@ db.Group.hasMany(db.Store, {foreignKey: 'groupId', useJunctionTable: false});
 db.Contact.hasMany(db.ContactComment, {foreignKey: 'contactId', useJunctionTable: false});
 db.Contact.hasMany(db.ContactComment, {foreignKey: 'contactId', useJunctionTable: false});
 db.Contact.belongsTo(db.Store, {foreignKey: 'storeId', targetKey: 'storeId'});
+db.Contact.belongsTo(db.PhoneModel, {foreignKey: 'phoneId', targetKey: 'phoneId'});
 module.exports = db;

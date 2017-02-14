@@ -88,6 +88,16 @@
 					</select>
 				</div>
 				<div class="form-group">
+					<label for="form-phoneId">단말기 종류</label>
+					<select name="phoneId" id="form-phoneId" required="required">
+						<option value="">선택하세요.</option>
+					{% for model in models %}
+						<option value="{{model.phoneId}}" >{{model.modelName.replace('_',' ')}}</option>
+					{% endfor %}
+					</select>
+				</div>
+
+				<div class="form-group">
 					<label for="textbox2">이름</label>
 					<input type="text" name="writerName" id="writerName" required="required">
 				</div>

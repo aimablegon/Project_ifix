@@ -128,7 +128,7 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 					<th width="10%" class="text-left">주소</th>
 					<th width="10%" class="text-center">운영시간</th>
 					<th width="50%" class="text-left">매장사진</th>
-					<th width="10%" class="text-center">정렬</th>
+					<th width="10%" class="text-center"  ng-show="loginInfo.isAdmin">정렬</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -140,7 +140,7 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 					<td class="text-left" > 
 						<span ng-repeat="attachFile in item.AttachFiles"><img src="{{attachFile.filePath}}" style="height:autho;width:250px;display:inline;margin:5px;" ></span>
 					</td>
-					<td class="text-center">					
+					<td class="text-center"  ng-show="loginInfo.isAdmin">					
 						<button class="btn m-b-xs w-xs btn-default" style="width:40px;" ng-click="upOrder($index)" ng-disabled="$index == 0">▲</button>
 						<button class="btn m-b-xs w-xs btn-default" style="width:40px;" ng-click="downOrder($index);" ng-disabled="$index+1 == fixPrices.length">▼</button>
 					</td>
@@ -151,12 +151,12 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 	<footer class="panel-footer">
 		<div class="row">
 			<div class="col-sm-12 text-center">
-			    <pagination boundary-links="true" class="m-t-none m-b-none"  ng-model="data.currentPage" total-items="data.totalCount" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="pageSize"></pagination>
+			    <pagination boundary-links="true" class="m-t-none m-b-none"  ng-model="data.currentPage" max-size="10" total-items="data.totalCount" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="pageSize"></pagination>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-12 text-right">
-			    <a href="#/app/store/detail/" class="btn btn-primary">새 지점 등록</a>
+			    <a href="#/app/store/detail/" class="btn btn-primary" ng-show="loginInfo.isAdmin">새 지점 등록</a>
 			</div>
 		</div>
 	</footer>

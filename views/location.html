@@ -15,6 +15,7 @@
 		margin-left: 20px;
 		display: block;
 	}
+
 </style>
 
 
@@ -40,7 +41,7 @@
 	<!-- /.pagetitle -->
 
 	<!-- CONTENT -->
-	<div class="content">
+	<div class="content location">
 		<!-- CONTAINER -->
 		<div class="container">
 		{% for group in groups %}
@@ -58,11 +59,11 @@
 					<a href="location_detail.html?storeId={{item.storeId}}" class="card-flip store_card">
 						<div class="flipper" style="margin-top:10px;margin-bottom:10px;">
 							<div class="front card card-light card-lightest card-border-solid" style="padding:0px;">
-								<div class="img_height" style="width:100%;background: url({{imagePath}});-webkit-background-size: cover;background-size: cover;">
-									<!-- <img
+								<div class="img_height">
+									<img
 										src="{{imagePath}}"
 										alt=""
-										style="width:100%;"> -->
+										style="width:100%;">
 								</div>
 								<hr class="hr-nobg hr-sm" />
 								<h4>{{item.name}}</h4>
@@ -73,7 +74,7 @@
 									 {%if item.holiTime%}<span>일요일: {{item.holiTime}}</span>{%endif%}
 									 {%if item.normalTime || item.satTime || item.holiTime%}<span style="height:10px"></span>{%endif%}
 									<strong>전화번호</strong>
-									<span>{{item.tel}}</span>
+									<span onclick="location.href='tel://{{item.tel}}'; return false;">{{item.tel}}</span>
 									 <span style="height:10px"></span>
 									<strong>주소</strong>
 									<span>{{item.address}}</span>
@@ -83,11 +84,13 @@
 								<hr class="hr-nobg hr-sm" />
 							</div>
 							<div class="back card card-dark"  style="padding:0px;">
-								<div class="img_height" style="width:100%;background: url({{imagePath}});-webkit-background-size: cover;background-size: cover;">
-									<!-- <img
-										src="{{imagePath}}"
-										alt=""
-										style="width:100%;"> -->
+								<div class="img-wrapper">
+									<div class="img_height">
+										<img
+											src="{{imagePath}}"
+											alt=""
+											style="width:100%;">
+									</div>
 								</div>
 								<hr class="hr-nobg hr-sm" />
 								<h4>{{item.name}}</h4>
@@ -98,7 +101,7 @@
 									 {%if item.holiTime%}<span>일요일: {{item.holiTime}}</span>{%endif%}
 									 {%if item.normalTime || item.satTime || item.holiTime%}<span style="height:10px"></span>{%endif%}
 									<strong>전화번호</strong>
-									<span>{{item.tel}}</span>
+									<span onclick="location.href='tel://{{item.tel}}'; return false;">{{item.tel}}</span>
 									 <span style="height:10px"></span>
 									<strong>주소</strong>
 									<span>{{item.address}}</span>
@@ -124,18 +127,51 @@
 		<!-- /.container -->
 	</div>
 
+
 <script>
+function get_version_of_IE () {
+
+	 var word;
+	 var version = "N/A";
+
+	 var agent = navigator.userAgent.toLowerCase();
+	 var name = navigator.appName;
+
+	 // IE old version ( IE 10 or Lower )
+	 if ( name == "Microsoft Internet Explorer" ) word = "msie ";
+
+	 else {
+		 // IE 11
+		 if ( agent.search("trident") > -1 ) word = "trident/.*rv:";
+
+		 // Microsoft Edge
+		 else if ( agent.search("edge/") > -1 ) word = "edge/";
+	 }
+
+	 var reg = new RegExp( word + "([0-9]{1,})(\\.{0,}[0-9]{0,1})" );
+
+	 if (  reg.exec( agent ) != null  ) version = RegExp.$1 + RegExp.$2;
+
+	 return version;
+}
 	var data = {{JSON.stringify(groups,0,4)}};
 	window.onload = function(){
 		// 리사이즈 보정
-		$('.img_height').css({height:$('.front.card').width() / 1.3});
-		$('.back.card').css({width:$('.front.card').width()});
+		if(parseInt(get_version_of_IE()) <= 8){
+			$('.img_height img').css({'height':200,'width':'100%'});
+		}else{
+			$('.img_height img').css({'height':$('.img_height img').width() / 1.3});
+			$('.back.card').css({width:$('.front.card').width()});
+		}
+
+
 		$(window).resize(function(){
-			$('.img_height').css({height:$('.front.card').width() / 1.3});
+			$('.img_height img').css({'height':$('.img_height img').width() / 1.3});
 			$('.back.card').css({width:$('.front.card').width()});
 		});
 
 		// 카드 height 통일
+		var con;
 		function getHeight(target){
             var arr = [];
             var temp = 0;
@@ -143,7 +179,11 @@
                 height:'auto'
             });
             target.each(function(){
-                arr.push($(this).outerHeight());
+				if(parseInt(get_version_of_IE()) <= 8){
+					arr.push(650);
+            	}else{
+					arr.push($(this).height());
+				}
             });
             for(i in arr){
                 (arr[i] > temp)? temp = arr[i] : temp = temp;
@@ -151,11 +191,14 @@
             target.css({
                 height:temp
             });
+			con = arr;
+
         }
         getHeight($('.box1 .card'));
         $(window).resize(function(){
             getHeight($('.box1 .card'));
-        })
-	}
+        });
+
+	};
 </script>
 {% endblock %}

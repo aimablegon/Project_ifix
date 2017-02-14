@@ -27,27 +27,28 @@
 
 	<!-- CONTENT -->
 	<div class="content">
-		
+
 		{% for item in list %}
 			<!-- POST: Standart -->
 			<div class="container post format-standart">
 				<div class="entry">
 					<header class="entry-header">
 						<h2><a>{{item.title}}</a></h2>
+						<h5>{{item.Store.name}}</h5>
 						<div class="meta">
 							<small><i class="fa fa-calendar"></i>{{item.registDate | date('Y-m-d')}}</small>
 						</div>
 					</header>
 					<div class="entry-content">
+						
+						<p style="word-break:break-all;white-space:pre-wrap;">{{item.PhoneModel.modelName.replace('_', ' ')}}</p>
 						<p style="word-break:break-all;white-space:pre-wrap;">{{item.content | safe}}</p>
 					</div>
 
-	
+
 				{% if item.ContactComments.length > 0 %}
 					<!-- COMMENTS -->
 					<div class="comments" id="comments" style="margin-top:15px;margin-left:15px;">
-						<h5>{{item.Store.name}} 답변</h5>
-						
 					{% for comment in item.ContactComments %}
 						<div class="comment clearfix">
 							<a href="" class="comment-ava"><img src="/images/50x50.png" alt="" class="img-circle img-sm" style="width:50px;height:50px;"></a>
@@ -64,13 +65,13 @@
 					</div>
 					<!-- /.comments -->
 
-				{% endif %} 
+				{% endif %}
 				</div>
 			</div>
 			<!-- /.post -->
-	
+
 			<hr/>
-			
+
 		{% endfor %}
 
 
@@ -78,12 +79,12 @@
 		<div class="container text-center">
 			<!-- PAGINATION -->
 			<ul class="pagination">
-				
+
 	                    {% set totalPage = Math.floor(totalCount / pageSize) %}
 	                    {% if totalCount % pageSize > 0 %}
 	                    	{% set totalPage = totalPage + 1%}
 	                    {% endif %}
-	                    
+
 	                    {% set num =  currentPage-1  %}
 	                    {% set startPage = Math.floor(num / 10) * 10 + 1%}
 						{% set endPage = startPage + 10 - 1 %}
@@ -95,7 +96,7 @@
                         {% else %}
                      	 	<li><a class="prev"><i class="fa fa-angle-left"></i></a></li>
                         {% endif %}
-                        
+
                         {% for i in Array(endPage-startPage+1) %}
                         	{% set page =  startPage + loop.index-1 %}
                        		{% if currentPage == page %}
@@ -104,20 +105,20 @@
                         		<li><a href="?page={{page}}">{{page}}</a></li>
                         	{% endif %}
                         {% endfor %}
-                                                
-                        {% if endPage < totalPage %}
+
+                        {% if currentPage < totalPage %}
                         	<li><a href="?page={{currentPage+1}}" class="next"><i class="fa fa-angle-right"></i></a></li>
                         {% else %}
                         	<li><a class="next"><i class="fa fa-angle-right"></i></a></li>
                         {% endif %}
 			</ul>
 			<!-- /.pagination -->
-			
+
 			<hr class="hr-nobg" />
 			<a href="contact_write.html" class="btn btn-primary">문의하기</a>
 		</div>
 		<!-- /.container -->
-		
+
 
 	</div>
 	<!-- /.content -->

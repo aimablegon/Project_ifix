@@ -43,8 +43,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require("./routes/router"));
 app.all("/", function(req, res) {
-	res.redirect("/html/src/home.html");
-});
+	if(req._parsedUrl.search) {
+		res.redirect("/html/src/home.html"+req._parsedUrl.search);	
+	} else {
+		res.redirect("/html/src/home.html");
+	}
+	
+});	
 app.use(express.static(__dirname + '/public'));
 
 http.createServer(app).listen(app.get('port'), function(){

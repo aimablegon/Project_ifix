@@ -14,12 +14,17 @@ angular.module('app')
         	  
         	  
         	  var currentUser = $cookieStore.get("currentUser");
+        	  console.log(currentUser);
+        	  if(currentUser && !$rootScope.loginInfo) {
+        		  $rootScope.loginInfo = JSON.parse(currentUser);
+        	  }
         	  
         	  
         	  if (toState.authenticate && typeof currentUser === 'undefined') {
-              // User isn’t authenticated
-              $state.transitionTo("access.signin");
-              event.preventDefault(); 
+	              // User isn’t authenticated
+        		  $rootScope.loginInfo = null;
+	              $state.transitionTo("access.signin");
+	              event.preventDefault(); 
         	  }
           });
       }

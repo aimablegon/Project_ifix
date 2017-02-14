@@ -14,14 +14,29 @@ router.all("/login", function (req, res, next) {
 	
 	console.log(req.body);
 	
-	if(req.body.email == "admin" && req.body.password == "1234") {
+	if(req.body.email == "admin" && req.body.password == "12344321") {
+		req.session.isLogin = true;
+		req.session.isAdmin = false;
+		res.send({
+			userId : req.body.email,
+			isSuccess : true,
+			isAdmin : false,
+			isLogin : true
+		});
+	}else if(req.body.email == "hpas2002" && req.body.password == "12344321!") {
+		req.session.isLogin = true;
 		req.session.isAdmin = true;
 		res.send({
-			isSuccess : true
+			userId : req.body.email,
+			isSuccess : true,
+			isAdmin : true,
+			isLogin : true
 		});
 	} else {
 		res.send({
-			isSuccess : false
+			isSuccess : false,
+			isAdmin : false,
+			isLogin : false
 		});
 		
 	}
@@ -37,8 +52,8 @@ router.all("/logout", function (req, res, next) {
 });
 
 router.all("/*", function (req, res, next) {
-	console.log(req.session.isAdmin);
-	if(req.session.isAdmin) {
+	console.log(req.session.isLogin);
+	if(req.session.isLogin) {
 		next();
 	} else {
 		res.status(401).end();

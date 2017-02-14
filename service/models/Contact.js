@@ -47,6 +47,10 @@ module.exports = function(sequelize, DataTypes) {
     replyYn: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    phoneId: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
     }
   }, {
     tableName: 'Contact'

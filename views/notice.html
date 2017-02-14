@@ -81,7 +81,7 @@
                         	{% endif %}
                         {% endfor %}
                                                 
-                        {% if endPage < totalPage %}
+                        {% if currentPage < totalPage %}
                         	<li><a href="?page={{currentPage+1}}" class="next"><i class="fa fa-angle-right"></i></a></li>
                         {% else %}
                         	<li><a class="next"><i class="fa fa-angle-right"></i></a></li>

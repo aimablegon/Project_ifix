@@ -237,10 +237,10 @@ router.all("/contact.html", function(req, res, next){
 
 
 			models.Contact.findAll({
-				order : "contactId Desc",
 				include: [{ all: true, nested: true}],
 				offset : (page-1)*pageSize,
-				limit : pageSize
+				limit : pageSize,
+				order : [['contactId' , 'DESC']]
 			})
 			.then(function (result) {
 				callback(null, result);
@@ -266,7 +266,22 @@ router.all("/contact_write.html", function(req, res, next){
 	models.Store.findAll({order : 'sortNo ASC , storeId DESC'})
 	.then(function (result) {
 		res.locals.stores = result;
-		next();
+
+
+
+		models.PhoneModel.findAll({
+			order : "phoneGroup ASC, phoneId Desc",
+			raw : true
+		})
+		.then(function (result2) {
+			console.log(result2);
+			res.locals.models = result2;
+			next();
+		})
+		.catch(function (err) {
+			process.nextTick(function () {throw err});
+		});
+		
 	})
 
 	.catch(function (err) {
@@ -367,10 +382,9 @@ router.all("/*.html", function(req, res, next){
 	    deviceInfo.Windows = /Windows NT ([0-9\._]+)[\);]/.exec(ua)[1];
 
 	var isReal = false;
-	if(req.headers.host.indexOf("ifixitkor.com") > 0) {
+	if(req.headers.host.indexOf("ifixitkor.com") > -1 || (req.headers['x-forwarded-host'] && req.headers['x-forwarded-host'].indexOf("ifixitkor.com") > -1) ) {
 		isReal = true;
 	}
-
 	res.render(paths[paths.length-1], {
 		deviceInfo : deviceInfo,
 		menuUrl : req.path.substring(1),

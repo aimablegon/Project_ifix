@@ -47,7 +47,7 @@ router.all("/contact", function(req, res, next){
 		    models.Contact.findAll({
 		    	where : where ,
 		    	include: [{ all: true, nested: true}],
-		    	order : "replyYn Asc, contactId Desc",
+		    	order : [['replyYn','ASC'],['contactId' , 'DESC']],
 		    	offset : (page-1)*pageSize,
 		    	limit : pageSize
 			})
@@ -144,6 +144,22 @@ router.all("/contact/:contactId/delete", function(req, res, next){
 
     models.Contact.destroy({
     	where : {contactId : req.params.contactId}
+    })
+	.then(function (result) {
+		res.end();
+	})
+	.catch(function (err) {
+		process.nextTick(function () {throw err});
+	});
+    
+});
+
+
+
+router.all("/contact/:commentId/deleteComment", function(req, res, next){
+
+    models.ContactComment.destroy({
+    	where : {commentId : req.params.commentId}
     })
 	.then(function (result) {
 		res.end();

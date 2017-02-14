@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
-angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$sce', '$stateParams', '$location', '$state',
-	function($scope, $rootScope, $http, $sce, $stateParams, $location, $state) {
+angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$sce', '$stateParams', '$location', '$state', '$window',
+	function($scope, $rootScope, $http, $sce, $stateParams, $location, $state, $window) {
 
 		$http({
 			method : "POST",
@@ -43,6 +43,23 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 	    	}
 
 	    }
+	    
+	    $scope.deleteComment = function (commentId) {
+
+	    	if(confirm("답글을 삭제 하시겠습니까?")) {
+
+				$http({
+					method : "POST",
+					url : "/admin/api/contact/"+commentId+'/deleteComment',
+				}).success(function(data) {
+					alert("삭제되었습니다.");
+					$window.location.reload();
+				});			
+
+	    	}
+
+	    }
+
 
 
 	}]
@@ -61,6 +78,18 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-sm-2 control-label">문의지점</label>
+				<div class="col-sm-10">
+					<p class="form-control-static">{{data.Store.name}}</p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">단말기기종</label>
+				<div class="col-sm-10">
+					<p class="form-control-static">{{data.PhoneModel.modelName.replace('_',' ')}}</p>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-2 control-label">제목</label>
 				<div class="col-sm-10">
 					<p class="form-control-static">{{data.title}}</p>
@@ -69,7 +98,13 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 			<div class="form-group">
 				<label class="col-sm-2 control-label">작성자</label>
 				<div class="col-sm-10">
-					<p class="form-control-static"><a href="#/app/member/detail/{{data.writerName}}">{{data.writerName}}</a></p>
+					<p class="form-control-static">{{data.writerName}}</p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">연락처 or 이메일</label>
+				<div class="col-sm-10">
+					<p class="form-control-static">{{data.writerEmail}}</p>
 				</div>
 			</div>
 			<div class="form-group">
@@ -84,8 +119,11 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 				
 				<div class="form-group">
 					<label class="col-sm-2 control-label">답변</label>
-					<div class="col-sm-10">
+					<div class="col-sm-9">
 						<textarea class="form-control" rows="6" placeholder="답변 내용을 입력해주세요." ng-model="item.content"></textarea>
+					</div>
+					<div class="col-sm-1" style="margin-top:10px;">
+						<button type="button" ng-click="deleteComment(item.commentId)" class="btn btn-danger" ng-show="item.commentId">삭제</button>
 					</div>
 				</div>
 			</div>
@@ -95,7 +133,7 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 				
 				<div class="col-sm-5 col-sm-offset-2">
 					
-					<button onclick="javascript:history.back()" class="btn btn-default m-r-sm">목록</a>
+					<button type="button" onclick="javascript:history.back()" class="btn btn-default m-r-sm">목록</a>
 					<button type="button" ng-click="delete()" class="btn btn-danger">삭제</button>
 					
 

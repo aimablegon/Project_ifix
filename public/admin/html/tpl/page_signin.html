@@ -1,8 +1,8 @@
 <script type="text/javascript">
 
 
-	app.controller('SigninFormController', [ '$scope', '$http', '$state', '$cookieStore',
-		function($scope, $http, $state, $cookieStore) {
+	app.controller('SigninFormController', [ '$scope', '$http', '$state', '$cookieStore', '$rootScope',
+		function($scope, $http, $state, $cookieStore, $rootScope) {
 
 			$scope.authError = null;
 			
@@ -18,10 +18,9 @@
 					if (!response.data.isSuccess) {
 						$scope.authError = 'ID or Password not right';
 					} else {
-						console.log("dasfdsa");
-						$cookieStore.put("currentUser",$scope.user.email);
-						console.log($cookieStore);
-						$state.go("app.store.list");
+						$cookieStore.put("currentUser",JSON.stringify(response.data));
+						$rootScope.loginInfo = response.data;
+						$state.go("app.contact.list");
 					}
 				}, function(x) {
 					$scope.authError = x.data;

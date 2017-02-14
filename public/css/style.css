@@ -15961,7 +15961,14 @@ form .rating-wrap .raty i
 .video_a img{ height: 150%;}
 .video_b img{ height: 150%;}*/
 
-
+/*.location .card .img_height{
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='{{imagePath}}',sizingMethod='scale');-ms-filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='{{imagePath}}', sizingMethod='scale');
+    -ms-behavior: url('backgroundsize.min.htc');
+}*/
 /*------------------------------------------------------------------
 [ RESPONSIVE ]
 -------------------------------------------------------------------*/

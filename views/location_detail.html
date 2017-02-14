@@ -46,14 +46,17 @@
 					<h2>{{store.name}}</h2>
 					<div class="heading-divider"></div>
                     <p class="modal_message">
+                    	{%if store.normalTime || store.satTime || store.holiTime%}
                         <br><strong>영업시간</strong><br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;{%if store.normalTime%}평일 : {{store.normalTime}}<br/>{%endif%}
                         &nbsp;&nbsp;&nbsp;&nbsp;{%if store.satTime%}토요일 : {{store.satTime}}<br/>{%endif%}
                         &nbsp;&nbsp;&nbsp;&nbsp;{%if store.holiTime%}공휴일 : {{store.holiTime}}<br/>{%endif%}
+                        {%endif%}
                         <br><strong>전화번호 : </strong>&nbsp;&nbsp;&nbsp;&nbsp;{{store.tel}}<br/>
                         <br><strong>주&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소 : </strong>&nbsp;&nbsp;&nbsp;&nbsp;{{store.address}}
                     </p>
 				</div>
+				{% if store.AttachFiles.length > 0 %}
 				<div class="col-sm-6">
 					<div class="card card-image">
 						<figure class="figure slider oneslider">
@@ -67,7 +70,7 @@
                                 {% else %}
                                     {% for item in attachFile %}
                                         <li>
-                                            <div class="img_box" style="background-image: url({{item.filePath}})">
+                                            <div class="img_box" style="background-image: url({{item.filePath}});filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='{{item.filePath}}', sizingMethod='scale');">
                                             </div>
                                         </li>
                                     {% endfor %}
@@ -79,14 +82,8 @@
 							<nav class="slider-pagination"></nav>
 						</figure>
 					</div>
-					<script>
-						$(document).ready(function() {
-							if(getInternetExplorerVersion() == 8) {
-								$(".card").hide();
-							}							
-						});
-					</script>
 				</div>
+				{%endif%}
 			</div>
 			<hr class="hr-nobg">
             <hr class="hr-nobg">
@@ -102,62 +99,11 @@
 			<script charset="UTF-8" class="daum_roughmap_loader_script" src="http://dmaps.daum.net/map_js_init/roughmapLoader.js"></script>
         </div>
 
-	{% if list.length > 0 %}
-    <div class="container">
-		<h2>문의 내역</h2>
-		<div class="heading-divider heading-divider-lg"></div>
-	</div>
-	{% endif %}
-	{% for item in list %}
-		<!-- POST: Standart -->
-
-		<div class="container post format-standart">
-			<div class="entry">
-				<header class="entry-header">
-					<h4><a>{{item.title}}</a></h4>
-					<div class="meta">
-						<small><i class="fa fa-calendar"></i>{{item.registDate | date('Y-m-d')}}</small>
-					</div>
-				</header>
-				<div class="entry-content">
-					<p style="word-break:break-all;white-space:pre-wrap;">{{item.content | safe}}</p>
-				</div>
-
-
-			{% if item.ContactComments.length > 0 %}
-				<!-- COMMENTS -->
-				<div class="comments" id="comments" style="margin-top:15px;margin-left:15px;">
-					<h5>{{item.Store.name}} 답변</h5>
-
-				{% for comment in item.ContactComments %}
-					<div class="comment clearfix">
-						<a href="" class="comment-ava"><img src="http://placehold.it/600x600" alt="" class="img-circle img-sm"></a>
-						<div class="comment-text">
-							<div class="comment-line">
-								<p>
-									{{comment.registDate | date('Y-m-d H:i:s', -480)}}
-								</p>
-							</div>
-							<p style="word-break:break-all;white-space:pre-wrap;">{{comment.content | safe}}</p>
-						</div>
-					</div>
-				{% endfor %}
-				</div>
-				<!-- /.comments -->
-
-			{% endif %}
-			</div>
-		</div>
-		<!-- /.post -->
-
-	{% endfor %}
-
-
 
 		<!-- CONTAINER -->
 		<div class="container text-center">
             <div class="text-center">
-				<a href="contact_write.html?storeId={{store.storeId}}" class="btn btn-inverse" style="margin-bottom:0;">문의하기</a>
+				<!--<a href="contact_write.html?storeId={{store.storeId}}" class="btn btn-inverse" style="margin-bottom:0;">문의하기</a>-->
                 <a href="location.html" class="btn btn-primary btn-wide" data-dismiss="modal">목록보기</a>
             </div>
 		</div>

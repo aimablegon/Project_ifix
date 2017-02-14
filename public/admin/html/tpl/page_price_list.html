@@ -126,7 +126,7 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 					<th width="10%" class="text-right">가격</th>
 					<th width="10%" class="text-right">공임</th>
 					<th width="10%" class="text-right">합계</th>
-					<th width="20%" class="text-center">-</th>
+					<th width="20%" class="text-center"  ng-show="loginInfo.isAdmin">-</th>
 				</tr>
 			</thead>
 			<!-- 
@@ -140,7 +140,7 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 					<td class="text-left"><input type="number" class="text-right" ng-model="item.partPrice" style="width:100%;"></td>
 					<td class="text-left"><input type="number" class="text-right" ng-model="item.pay" style="width:100%;"></td>
 					<td class="text-right">{{item.pay+item.partPrice | number}}</td>
-					<td class="text-center">
+					<td class="text-center" ng-show="loginInfo.isAdmin">
 						<button class="btn m-b-xs w-xs btn-danger" ng-click="remove($index)">삭제</button>
 						<button class="btn m-b-xs w-xs btn-default" style="width:40px;" ng-click="upOrder($index)" ng-disabled="$index == 0">▲</button>
 						<button class="btn m-b-xs w-xs btn-default" style="width:40px;" ng-click="downOrder($index);" ng-disabled="$index+1 == fixPrices.length">▼</button>
@@ -153,10 +153,10 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 	<footer class="panel-footer">
 		<div class="row">
 			<div class="col-sm-2 text-left">
-			    <button class="btn btn-info" ng-click="addRow()">추가</button>
+			    <button class="btn btn-info" ng-click="addRow()"  ng-show="loginInfo.isAdmin">추가</button>
 			</div>
 			<div class="col-sm-10 text-right">
-			    <button class="btn btn-primary" ng-click="save()">변경사항 저장</button>
+			    <button class="btn btn-primary" ng-click="save()"  ng-show="loginInfo.isAdmin">변경사항 저장</button>
 			</div>
 		</div>
 	</footer>

@@ -266,9 +266,9 @@
 								class="icon icon-color icon-size-4">
 								<i class="fa fa-mobile"></i>
 							</div>
-							<h4>전국 14개 지점</h4>
+							<h4>중고폰 매입</h4>
 							<div class="heading-divider"></div>
-							<p>전국 14개 협력업체, 수많은 테크니션을 보유한 수리사설업체 중 가장 신뢰받는 업체입니다. </p></a></li>
+							<p>전문가의 휴대폰 감정 및 현재 시세에 따라 있는 합리적인 매입가를 제시해 드립니다.</p></a></li>
 					<li class="col-sm-3"><a href="#" class="card card-dark"><div
 								class="icon icon-color icon-size-4">
 								<i class="fa fa-fighter-jet"></i>
@@ -343,7 +343,7 @@
 
 			 -->
 
-	<div class="container">
+	<div class="container location">
 		<div class="page-header text-center">
 			<h1>전국 지점 안내</h1>
 			<hr class="hr-nobg" />
@@ -361,11 +361,11 @@
 					<a href="location_detail.html?storeId={{item.storeId}}" class="card-flip store_card">
 						<div class="flipper" style="margin-top:10px;margin-bottom:10px;">
 							<div class="front card card-light card-lightest card-border-solid" style="padding:0px;">
-								<div class="img_height" style="width:100%;background: url({{imagePath}});-webkit-background-size: cover;background-size: cover;">
-									<!-- <img
+								<div class="img_height">
+									<img
 										src="{{imagePath}}"
 										alt=""
-										style="width:100%;"> -->
+										style="width:100%;">
 								</div>
 								<hr class="hr-nobg hr-sm" />
 								<h4>{{item.name}}</h4>
@@ -376,7 +376,7 @@
 									 {%if item.holiTime%}<span>일요일: {{item.holiTime}}</span>{%endif%}
 									 {%if item.normalTime || item.satTime || item.holiTime%}<span style="height:10px"></span>{%endif%}
 									<strong>전화번호</strong>
-									<span>{{item.tel}}</span>
+									<span onclick="location.href='tel://{{item.tel}}'; return false;">{{item.tel}}</span>
 									 <span style="height:10px"></span>
 									<strong>주소</strong>
 									<span>{{item.address}}</span>
@@ -386,11 +386,11 @@
 								<hr class="hr-nobg hr-sm" />
 							</div>
 							<div class="back card card-dark"  style="padding:0px;">
-								<div class="img_height" style="width:100%;background: url({{imagePath}});-webkit-background-size: cover;background-size: cover;">
-									<!-- <img
+								<div class="img_height">
+									<img
 										src="{{imagePath}}"
 										alt=""
-										style="width:100%;"> -->
+										style="width:100%;">
 								</div>
 								<hr class="hr-nobg hr-sm" />
 								<h4>{{item.name}}</h4>
@@ -401,7 +401,7 @@
 									 {%if item.holiTime%}<span>일요일: {{item.holiTime}}</span>{%endif%}
 									 {%if item.normalTime || item.satTime || item.holiTime%}<span style="height:10px"></span>{%endif%}
 									<strong>전화번호</strong>
-									<span>{{item.tel}}</span>
+									<span onclick="location.href='tel://{{item.tel}}'; return false;">{{item.tel}}</span>
 									 <span style="height:10px"></span>
 									<strong>주소</strong>
 									<span>{{item.address}}</span>
@@ -428,7 +428,7 @@
 
 <script>
 	var data = {{JSON.stringify(groups,0,4)}};
-	window.onload = function(){
+	$(document).ready(function(){
 		// 리사이즈 보정
 		$('.img_height').css({height:$('.front.card').width() / 1.3});
 		$('.back.card').css({width:$('.front.card').width()});
@@ -484,8 +484,9 @@
 		}
 		//팝업 열기
 		function openWin( winName ) {
+			console.log("openWin");
 		   var blnCookie    = getCookie( winName );
-		   if( !blnCookie ) {
+		   if( !blnCookie ) {			   
 			   $('#open_pop').css({
    					'display':'block'
    				});
@@ -525,7 +526,7 @@
 				'display':'none'
 			});
 		});
-	}
+	});
 
 	// var topVedio = setInterval(function(){
 	// 	$('.html5vid.HasListener.fullcoveredvideo').css({
@@ -574,11 +575,53 @@ if(parseInt(get_version_of_IE()) <= 11 && parseInt(get_version_of_IE()) >= 8){
 	});
 }
 
+window.onload = function(){
+	// 리사이즈 보정
+	if(parseInt(get_version_of_IE()) <= 8){
+		$('.img_height img').css({'height':200,'width':'100%'});
+	}else{
+		$('.img_height img').css({'height':$('.img_height img').width() / 1.3});
+		$('.back.card').css({width:$('.front.card').width()});
+	}
+
+
+	$(window).resize(function(){
+		$('.img_height img').css({'height':$('.img_height img').width() / 1.3});
+		$('.back.card').css({width:$('.front.card').width()});
+	});
+
+	// 카드 height 통일
+	var con;
+	function getHeight(target){
+		var arr = [];
+		var temp = 0;
+		target.css({
+			height:'auto'
+		});
+		target.each(function(){
+			if(parseInt(get_version_of_IE()) <= 8){
+				arr.push(650);
+			}else{
+				arr.push($(this).height());
+			}
+		});
+		for(i in arr){
+			(arr[i] > temp)? temp = arr[i] : temp = temp;
+		}
+		target.css({
+			height:temp
+		});
+		con = arr;
+
+	}
+	getHeight($('.box1 .card'));
+	$(window).resize(function(){
+		getHeight($('.box1 .card'));
+	});
+
+};
 </script>
 
 {% endblock %}
 
 
-
-self.close();
-}

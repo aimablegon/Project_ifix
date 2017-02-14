@@ -104,12 +104,12 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 	<footer class="panel-footer">
 		<div class="row">
 			<div class="col-sm-12 text-center">
-			    <pagination boundary-links="true" class="m-t-none m-b-none"  ng-model="data.currentPage" total-items="data.totalCount" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="pageSize"></pagination>
+			    <pagination boundary-links="true" class="m-t-none m-b-none"  ng-model="data.currentPage" max-size="10" total-items="data.totalCount" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="pageSize"></pagination>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-12 text-right">
-			    <a href="#/app/board/detail?boardId={{boardId}}" class="btn btn-primary">글쓰기</a>
+			    <a href="#/app/board/detail?boardId={{boardId}}" class="btn btn-primary" ng-show="loginInfo.isAdmin">글쓰기</a>
 			</div>
 		</div>
 	</footer>

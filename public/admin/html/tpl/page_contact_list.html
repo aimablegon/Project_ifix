@@ -6,7 +6,7 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 		
 		$scope.searchText	= $stateParams.searchText;
 		$scope.pageSize = $rootScope.pageSize ? $rootScope.pageSize : "10";
-		$scope.storeId = parseInt($stateParams.storeId);
+		$scope.storeId = $stateParams.storeId ? parseInt($stateParams.storeId) : "";
 
 		$scope.loadData = function () {
 			$http({
@@ -94,7 +94,8 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 				<tr>
 					<th width="10%" class="text-center">No</th>
 					<th width="10%" class="text-left">문의지점</th>
-					<th width="40%" class="text-left">제목</th>
+					<th width="20%" class="text-left">단말기기종</th>
+					<th width="20%" class="text-left">제목</th>
 					<th width="10%" class="text-center">작성자</th>
 					<th width="20%" class="text-center">작성일시</th>
 					<th width="10%" class="text-center">답변여부</th>
@@ -102,10 +103,11 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 			</thead>
 			<tbody >
 				<tr ng-repeat="item in data.list">
-					<td class="text-center">{{data.totalCount - Math.floor((data.currentPage-1) * pageSize) - $index}}</td>
-					<td class="text-left">{{item.Store.name}}</td>
+					<td class="text-center">{{data.totalCount - ((data.currentPage-1) * pageSize) - $index}}</td>
+					<td class="text-left"><a href="#/app/contact/detail/{{item.contactId}}">{{item.Store.name}}</a></td>
+					<td class="text-left"><a href="#/app/contact/detail/{{item.contactId}}">{{item.PhoneModel.modelName.replace('_',' ')}}</a></td>
 					<td class="text-left"><a href="#/app/contact/detail/{{item.contactId}}">{{item.title}}</a></td>
-					<td class="text-center">{{item.writerName}}</td>
+					<td class="text-center"><a href="#/app/contact/detail/{{item.contactId}}">{{item.writerName}}</a></td>
 					<td class="text-center">{{item.registDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 					<td class="text-center">{{item.replyYn == 'Y' ? '완료' : '미완료' }}</td>
 				</tr>
@@ -118,7 +120,7 @@ angular.module('app').controller('myCtrl', ['$scope', '$rootScope', '$http', '$s
 	<footer class="panel-footer">
 		<div class="row">
 			<div class="col-sm-12 text-center">
-			    <pagination boundary-links="true" class="m-t-none m-b-none"  ng-model="data.currentPage" total-items="data.totalCount" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="pageSize"></pagination>
+			    <pagination boundary-links="true" class="m-t-none m-b-none"  ng-model="data.currentPage" max-size="10" total-items="data.totalCount" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="pageSize"></pagination>
 			</div>
 
 		</div>
